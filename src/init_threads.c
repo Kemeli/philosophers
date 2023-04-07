@@ -53,17 +53,13 @@ void	start_threads(t_args *args)
 		phil_args[i].time2sleep = args->time2sleep;
 		i++;
 	}
-    i = 0;
-	while (i < args->num_philo)
-	{
+    i = -1;
+	while (++i < args->num_philo)
 		pthread_create (&Philosopher[i], NULL, routine, &phil_args[i]);
-		i++;
-	}
-
-	i = 0;
-	while (i < args->num_philo)
-	{
+	i = -1;
+	while (++i < args->num_philo)
 		pthread_join (Philosopher[i], NULL);
-		i++;
-	}
+	i = 0;
+	while (++i < args->num_philo)
+		free (phil_args);
 }

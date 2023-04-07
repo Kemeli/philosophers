@@ -16,6 +16,9 @@ typedef struct s_args
 	int	time2sleep;
 	int	num_philo;
 	int	id;
+	// pthread_mutex_t forks;
+	struct	timeval	first_time;
+	int count_time; //long?
 } t_args;
 
 void	start_threads(t_args *args);

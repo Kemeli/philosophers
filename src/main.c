@@ -22,10 +22,11 @@ int	main()
 	t_args *args;
 
 	int argc = 4;
-	char *argv[5] = {"2", "410", "200", "200", NULL};
+	char *argv[5] = {"2", "410", "200", "100", NULL};
 
 	args = calloc (1, sizeof (t_args));
 	check_args (argc);
 	convert_to_integer (argv, &args);
 	start_threads(args);
+	free (args);
 }
