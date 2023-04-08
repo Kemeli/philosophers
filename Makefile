@@ -1,5 +1,6 @@
 SRC =		main.c \
-			init_threads.c
+			init_philo.c \
+			routine.c
 			
 NAME =		philo
 FLAGS =		-Wall -Wextra -Werror
