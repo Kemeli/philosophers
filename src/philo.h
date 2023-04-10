@@ -20,6 +20,8 @@ typedef struct s_args
 	pthread_mutex_t *right_fork;
 	pthread_mutex_t *left_fork;
 	pthread_mutex_t *meals_gate;
+	struct timeval waiting_time;
+	long int timer;
 } t_args;
 
 void	start_threads(t_args *args);

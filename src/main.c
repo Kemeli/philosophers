@@ -23,7 +23,7 @@ int	main()
 	t_args *args;
 
 	int argc = 5;
-	char *argv[6] = {"2", "410", "200", "100", "3", NULL};
+	char *argv[6] = {"2", "10", "200", "100", "3", NULL};
 
 	args = calloc (1, sizeof (t_args));
 	check_args (argc);
