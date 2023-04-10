@@ -13,11 +13,13 @@ typedef struct s_args
 	int	time2die;
 	int	time2sleep;
 	int	num_philo;
+	int	meals_num;
 	int	id;
 	struct	timeval	first_time;
 	int count_time; //long?
 	pthread_mutex_t *right_fork;
 	pthread_mutex_t *left_fork;
+	pthread_mutex_t *meals_gate;
 } t_args;
 
 void	start_threads(t_args *args);

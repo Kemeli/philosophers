@@ -1,6 +1,6 @@
 #include "philo.h"
 
-void	init_args(t_args *args, t_args **phil_args, pthread_mutex_t **forks)
+void	init_args(t_args *args, t_args **phil_args, pthread_mutex_t **forks, pthread_mutex_t **meals)
 {
 	int i = 0;
 	while (i < args->num_philo)
@@ -10,8 +10,11 @@ void	init_args(t_args *args, t_args **phil_args, pthread_mutex_t **forks)
 		(*phil_args)[i].time2die = args->time2die;
 		(*phil_args)[i].time2eat = args->time2eat;
 		(*phil_args)[i].time2sleep = args->time2sleep;
+		(*phil_args)[i].meals_num = args->meals_num;
 		(*phil_args)[i].right_fork = &(*forks)[i];
 		(*phil_args)[i].left_fork = &(*forks)[(i + 1) % args->num_philo];
+		(*phil_args)[i].meals_gate = &(*meals)[i];
+		
 		gettimeofday(&(*phil_args)[i].first_time, NULL);
 		i++;
 	}
@@ -31,12 +34,17 @@ void	start_threads(t_args *args)
 {
 	pthread_t Philosopher[args->num_philo];
 	pthread_mutex_t *forks;
+	pthread_mutex_t *meals = calloc (args->num_philo, sizeof (pthread_mutex_t));
+
+	int	i = -1;
+	while (++i < args->num_philo)
+		pthread_mutex_init (&meals[i], NULL);
+
 	t_args *phil_args = calloc (args->num_philo, sizeof (t_args));
-	int	i;
 
 	init_forks(args, &forks);
 
-	init_args(args, &phil_args, &forks);
+	init_args(args, &phil_args, &forks, &meals);
 
     i = -1;
 	while (++i < args->num_philo)

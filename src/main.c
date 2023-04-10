@@ -14,6 +14,7 @@ void	*convert_to_integer (char **argv, t_args **args)
 	(*args)->time2die = atoi(argv[1]);
 	(*args)->time2eat = (atoi(argv[2]) * 1000);
 	(*args)->time2sleep = (atoi(argv[3]) * 1000);
+	(*args)->meals_num = atoi(argv[4]);
 	return NULL;
 }
 
@@ -21,8 +22,8 @@ int	main()
 {
 	t_args *args;
 
-	int argc = 4;
-	char *argv[5] = {"2", "410", "200", "100", NULL};
+	int argc = 5;
+	char *argv[6] = {"2", "410", "200", "100", "3", NULL};
 
 	args = calloc (1, sizeof (t_args));
 	check_args (argc);

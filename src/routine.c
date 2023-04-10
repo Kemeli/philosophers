@@ -29,23 +29,28 @@ void	*routine(void *arg)
 	t_args *args;
 	args = (t_args *)arg;
 
-	grab_forks (args);
+    while (args->meals_num > 0)
+    {
+        pthread_mutex_lock (args->meals_gate);
+        args->meals_num--;
+        pthread_mutex_unlock (args->meals_gate);
+        grab_forks (args);
 
-	args->count_time = handle_time (args);
-	printf ("\t%d Philosopher %d is eating\n", args->count_time, args->id);
+        args->count_time = handle_time (args);
+        printf ("\t%d Philosopher %d is eating\n", args->count_time, args->id);
 
-	usleep (args->time2eat);
+        usleep (args->time2eat);
 
-	pthread_mutex_unlock(args->left_fork);
-	pthread_mutex_unlock(args->right_fork);
+        pthread_mutex_unlock(args->left_fork);
+        pthread_mutex_unlock(args->right_fork);
 
-	args->count_time = handle_time(args);
-    printf ("\t%d Philosopher %d is sleeping\n", args->count_time, args->id);
+        args->count_time = handle_time(args);
+        printf ("\t%d Philosopher %d is sleeping\n", args->count_time, args->id);
 
-	usleep (args->time2sleep);
+        usleep (args->time2sleep);
 
-	args->count_time = handle_time(args);
-	printf ("\t%d Philosopher %d is thinking\n", args->count_time, args->id);
-
+        args->count_time = handle_time(args);
+        printf ("\t%d Philosopher %d is thinking\n", args->count_time, args->id);
+    }
 	return (NULL);
 }
