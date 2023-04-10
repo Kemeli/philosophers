@@ -75,13 +75,13 @@ void	*routine(void *arg)
         to_sleep (args);
         to_think (args);
         waiting = get_time();
-        printf ("\twaiting: %ld\n", waiting);
-        printf ("\tlast_meal: %ld\n", last_meal);
+        // printf ("\twaiting: %ld\n", waiting);
+        // printf ("\tlast_meal: %ld\n", last_meal);
 
         if (waiting >= last_meal + args->time2die)
         {
             printf("\tphilosopher %d died\n\n", args->id);
-            break ;
+            return (NULL);
         }
     }
 	return (NULL);

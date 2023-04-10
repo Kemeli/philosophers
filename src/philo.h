@@ -22,6 +22,7 @@ typedef struct s_args
 	pthread_mutex_t *meals_gate;
 	struct timeval waiting_time;
 	long int timer;
+	int is_dead;
 } t_args;
 
 void	start_threads(t_args *args);
