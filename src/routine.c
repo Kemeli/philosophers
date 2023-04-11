@@ -3,11 +3,12 @@
 int    handle_time(t_args *args)
 {
     struct	timeval	next_time;
+    long int count_time;
 
 	gettimeofday (&next_time, NULL);
-	args->count_time = (next_time.tv_sec - args->first_time.tv_sec) * 1000.0 
+	count_time = (next_time.tv_sec - args->first_time.tv_sec) * 1000.0 
         + (next_time.tv_usec - args->first_time.tv_usec) / 1000.0;
-	return (args->count_time);
+	return (count_time);
 }
 
 int	get_time(void)
@@ -20,69 +21,83 @@ int	get_time(void)
 
 void	grab_forks(t_args *args)
 {
-	if (args->id == args->num_philo)
+    int timer;
+
+    if (args->key)
+        usleep (args->time2eat);
+    args->key = !args->key;
+    timer = handle_time (args);
+    if (timer > args->time2die)
+        printf("%d philo %d DIED\n", timer, args->id);
+    if (args->id != args->num_philo)
 	{
 		pthread_mutex_lock(args->left_fork);
-		pthread_mutex_lock(args->right_fork);
+        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (left) fork\n",
+            timer, args->id);
+        pthread_mutex_lock(args->right_fork);
+        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (right) fork\n",
+            timer, args->id);
 	}
 	else
 	{
-		pthread_mutex_lock(args->right_fork);
+	    pthread_mutex_lock(args->right_fork);
+        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (right) fork\n",
+            timer, args->id);
 		pthread_mutex_lock(args->left_fork);
+        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (left) fork\n",
+            timer, args->id);
 	}
 }
 
 void    to_eat(t_args *args)
 {
-        pthread_mutex_lock (args->meals_gate);
+    pthread_mutex_lock (args->gate);
+    if (args->meals_num)
         args->meals_num--;
-        pthread_mutex_unlock (args->meals_gate);
-        grab_forks (args);
+    pthread_mutex_unlock (args->gate);
 
-        args->count_time = handle_time (args);
-        printf ("\t%d Philosopher %d is eating\n", args->count_time, args->id);
+    grab_forks (args);
 
-        usleep (args->time2eat);
+    args->count_time = handle_time (args);
+    printf ("\t%d Philosopher \033[31m%d\033[0m is \033[33meating\033[0m\n",
+        args->count_time, args->id);
+    usleep (args->time2eat);
 
-        pthread_mutex_unlock(args->left_fork);
-        pthread_mutex_unlock(args->right_fork);
+    args->last_meal = get_time();
+
+    pthread_mutex_unlock(args->left_fork);
+    pthread_mutex_unlock(args->right_fork);
 }
 
 void    to_sleep(t_args *args)
 {
-        args->count_time = handle_time(args);
-        printf ("\t%d Philosopher %d is sleeping\n", args->count_time, args->id);
-        usleep (args->time2sleep);
+    args->count_time = handle_time(args);
+    printf ("\t%d Philosopher \033[31m%d\033[0m is \033[34msleeping\033[0m\n",
+        args->count_time, args->id);
+    usleep (args->time2sleep);
 }
 
 void    to_think(t_args *args)
 {
     args->count_time = handle_time(args);
-    printf ("\t%d Philosopher %d is thinking\n", args->count_time, args->id);
+    printf ("\t%d Philosopher \033[31m%d\033[0m is \033[32mthinking\033[0m\n",
+        args->count_time, args->id);
 }
 
 void	*routine(void *arg)
 {
 	t_args *args;
 	args = (t_args *)arg;
-    long int waiting;
-    long int last_meal;
 
-    while (args->meals_num > 0)
+    args->last_meal = get_time();
+
+    while (1)
     {
         to_eat (args);
-        last_meal = get_time();
         to_sleep (args);
         to_think (args);
-        waiting = get_time();
-        // printf ("\twaiting: %ld\n", waiting);
-        // printf ("\tlast_meal: %ld\n", last_meal);
-
-        if (waiting >= last_meal + args->time2die)
-        {
-            printf("\tphilosopher %d died\n\n", args->id);
-            return (NULL);
-        }
+        if (args->meals_num == 1) //checar se devem dormir e pensar após finalizar
+            break ;
     }
 	return (NULL);
 }

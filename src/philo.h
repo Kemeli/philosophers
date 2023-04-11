@@ -19,13 +19,18 @@ typedef struct s_args
 	int count_time; //long?
 	pthread_mutex_t *right_fork;
 	pthread_mutex_t *left_fork;
-	pthread_mutex_t *meals_gate;
+	pthread_mutex_t *gate;
 	struct timeval waiting_time;
 	long int timer;
 	int is_dead;
+	long int last_meal;
+	long int start_timer;
+	int key;
 } t_args;
 
 void	start_threads(t_args *args);
 void	*routine(void *arg);
+int		get_time(void);
+
 
 #endif
