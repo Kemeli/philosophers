@@ -1,9 +1,14 @@
 #include "philo.h"
 
-void	init_args(t_args *args, t_args **phil_args, pthread_mutex_t **forks, pthread_mutex_t **gate)
+void	init_args(t_args *args, t_args **phil_args,
+		pthread_mutex_t **forks, pthread_mutex_t **gate)
 {
 	int i;
 	i = 0;
+	long int start;
+
+	start = get_time();
+
 	while (i < args->num_philo)
 	{
 		(*phil_args)[i].id = i + 1;
@@ -15,17 +20,22 @@ void	init_args(t_args *args, t_args **phil_args, pthread_mutex_t **forks, pthrea
 		(*phil_args)[i].right_fork = &(*forks)[i];
 		(*phil_args)[i].left_fork = &(*forks)[(i + 1) % args->num_philo];
 		(*phil_args)[i].gate = &(*gate)[i];
+		// (*phil_args)[i].lock = &(*lock)[i];
 
 		if ((*phil_args)[i].id % 2 == 0)
 			(*phil_args)[i].key = 1;
 		else 
 			(*phil_args)[i].key = 0;
+		if ((*phil_args)[i].id == args->num_philo && (*phil_args)[i].id % 2 != 0) //se for o ultimo e impar
+			(*phil_args)[i].key = 1;
 
-		gettimeofday(&(*phil_args)[i].first_time, NULL); //fazer um só aqui
+		(*phil_args)[i].first_time = start;
+		// gettimeofday(&(*phil_args)[i].first_time, NULL); //fazer um só aqui
 		(*phil_args)[i].start_timer = get_time();
 		i++;
 	}
 }
+//pegar o firsttime fora e passar o msm ponteiro para cada filósofo
 
 void	init_forks(t_args *args, pthread_mutex_t **forks)
 {
@@ -37,22 +47,55 @@ void	init_forks(t_args *args, pthread_mutex_t **forks)
 		pthread_mutex_init(&(*forks)[i], NULL);
 }
 
-void	init_mutex(t_args *args, pthread_mutex_t **meals)
+void	init_mutex(t_args *args, pthread_mutex_t **gate)
 {
 	int	i;
 
-	*meals = calloc (args->num_philo, sizeof (pthread_mutex_t));
+	*gate = calloc (args->num_philo, sizeof (pthread_mutex_t));
+	// *lock = calloc (args->num_philo, sizeof (pthread_mutex_t));
 	i = -1;
 	while (++i < args->num_philo)
-		pthread_mutex_init (&(*meals)[i], NULL);
+	{
+		pthread_mutex_init (&(*gate)[i], NULL);
+		// pthread_mutex_init (&(*lock)[i], NULL);
+	}
 }
 
+void	monitoring (t_args *args)
+{
+	int	is_dead;
+	int	last_meal;
+	int i;
+	pthread_mutex_t lock;
+	pthread_mutex_init(&lock, NULL);
+
+	is_dead = 0;
+	while (!is_dead)
+	{
+		i = 0;
+		while (i < args->num_philo && !is_dead)
+		{
+			// printf ("%d", last_meal);
+			pthread_mutex_lock(&lock);
+			last_meal = args[i].last_meal;
+			pthread_mutex_unlock(&lock);
+			if (get_time() >= last_meal + args->time2die)
+			{
+				// printf ("\tphilosopher %d died\n\n", args[i].id);
+				pthread_mutex_lock(&lock);
+				is_dead = 1;
+				pthread_mutex_unlock(&lock);
+			}
+			i++;
+		}
+	}
+}
 
 void	start_threads(t_args *args)
 {
 	pthread_t Philosopher[args->num_philo];
 	pthread_mutex_t *forks;
-	pthread_mutex_t *gate; 
+	pthread_mutex_t *gate;
 	t_args *phil_args;
 	int	i;
 
@@ -64,7 +107,12 @@ void	start_threads(t_args *args)
 
     i = -1;
 	while (++i < args->num_philo)
+	{
 		pthread_create (&Philosopher[i], NULL, routine, &phil_args[i]);
+		// usleep(1);
+	}
+
+	monitoring (phil_args);
 
 	i = -1;
 	while (++i < args->num_philo)

@@ -35,7 +35,7 @@ int	main()
 	t_args *args;
 
 	int argc = 5;
-	char *argv[5] = {"4", "400", "200", "200", NULL};
+	char *argv[6] = {"4", "200", "100", "200", "1", NULL};
 
 	args = calloc (1, sizeof (t_args));
 	check_args (argc);
@@ -45,3 +45,5 @@ int	main()
 		printf ("invalid arguments\n");
 	free (args);
 }
+
+//./philo 11 400 100 200 1

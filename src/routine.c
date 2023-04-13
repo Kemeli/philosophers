@@ -1,52 +1,113 @@
 #include "philo.h"
 
-int    handle_time(t_args *args)
-{
-    struct	timeval	next_time;
-    long int count_time;
 
-	gettimeofday (&next_time, NULL);
-	count_time = (next_time.tv_sec - args->first_time.tv_sec) * 1000.0 
-        + (next_time.tv_usec - args->first_time.tv_usec) / 1000.0;
-	return (count_time);
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s && s[i] != '\0')
+		i++;
+	return (i);
 }
 
-int	get_time(void)
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putnbr_fd(long int num, int fd)
+{
+	if (num > 9)
+		ft_putnbr_fd(num / 10, fd);
+	ft_putchar_fd(num % 10 + '0', fd);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	write(fd, s, ft_strlen(s));
+}
+
+
+int    handle_time(t_args *args)
+{
+    long int count_time;
+    long int result;
+
+	count_time = get_time ();
+    result = count_time - args->first_time;
+	return (result);
+}
+
+long int	get_time(void)
 {
 	struct timeval	time;
+    long int result;
 
 	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+    result = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+
+	return (result);
+}
+
+void    print_messsage (int id, int long timer, char *msg)
+{
+    printf ("%ld philosopher %d is %s\n", timer, id, msg);
+
+    // ft_putnbr_fd (timer, 1);
+    // ft_putstr_fd (" philosopher ", 1);
+    // ft_putnbr_fd ((int)id, 1);
+    // ft_putstr_fd (msg, 1);
+    // ft_putchar_fd ('\n', 1);
+}
+
+void    print_actions(t_args *args, int action) //colocar as actions em um enum
+{
+    long int timer;
+    // static pthread_mutex_t *loco; //inicializa com nullo
+
+    // if (!loco)
+    // {
+    //     loco = calloc (1, sizeof (pthread_mutex_t));
+        // pthread_mutex_init(&args->gate, NULL);
+    // }
+
+    pthread_mutex_lock(args->gate);
+    timer = handle_time(args);
+    if (action == 1)
+        print_messsage (args->id, timer, " has taken a fork");       
+    else if (action == 2)
+        print_messsage (args->id, timer, " is \033[33meating\033[0m");      
+    else if (action == 3)
+        print_messsage (args->id, timer, " is \033[34msleeping\033[0m");      
+    else if (action == 4)
+        print_messsage (args->id, timer, " is \033[32mthinking\033[0m");
+    pthread_mutex_unlock(args->gate);
 }
 
 void	grab_forks(t_args *args)
 {
-    int timer;
+    // int timer;
 
     if (args->key)
-        usleep (args->time2eat);
+        usleep (100);
     args->key = !args->key;
-    timer = handle_time (args);
-    if (timer > args->time2die)
-        printf("%d philo %d DIED\n", timer, args->id);
+    // timer = handle_time (args);
+    // printf("\t\t%d\n", timer);
     if (args->id != args->num_philo)
 	{
 		pthread_mutex_lock(args->left_fork);
-        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (left) fork\n",
-            timer, args->id);
+        print_actions(args, 1);
         pthread_mutex_lock(args->right_fork);
-        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (right) fork\n",
-            timer, args->id);
+        print_actions(args, 1);
 	}
 	else
 	{
 	    pthread_mutex_lock(args->right_fork);
-        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (right) fork\n",
-            timer, args->id);
+        print_actions(args, 1);
 		pthread_mutex_lock(args->left_fork);
-        printf ("\t%d philosopher \033[31m%d\033[0m has taken a (left) fork\n",
-            timer, args->id);
-	}
+        print_actions(args, 1);
+    }
 }
 
 void    to_eat(t_args *args)
@@ -58,12 +119,12 @@ void    to_eat(t_args *args)
 
     grab_forks (args);
 
-    args->count_time = handle_time (args);
-    printf ("\t%d Philosopher \033[31m%d\033[0m is \033[33meating\033[0m\n",
-        args->count_time, args->id);
+    print_actions(args, 2);
+    pthread_mutex_lock (args->gate);
+    args->last_meal = get_time();
+    pthread_mutex_unlock (args->gate);
     usleep (args->time2eat);
 
-    args->last_meal = get_time();
 
     pthread_mutex_unlock(args->left_fork);
     pthread_mutex_unlock(args->right_fork);
@@ -71,17 +132,14 @@ void    to_eat(t_args *args)
 
 void    to_sleep(t_args *args)
 {
-    args->count_time = handle_time(args);
-    printf ("\t%d Philosopher \033[31m%d\033[0m is \033[34msleeping\033[0m\n",
-        args->count_time, args->id);
+    print_actions(args, 3);
     usleep (args->time2sleep);
 }
 
 void    to_think(t_args *args)
 {
     args->count_time = handle_time(args);
-    printf ("\t%d Philosopher \033[31m%d\033[0m is \033[32mthinking\033[0m\n",
-        args->count_time, args->id);
+    print_actions(args, 4);
 }
 
 void	*routine(void *arg)
