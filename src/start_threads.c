@@ -20,6 +20,6 @@ void	start_threads(t_data *args)
 		pthread_create (&philosopher[i], NULL, routine, &philo[i]);
 		usleep(1);
 	}
-	// monitoring (philo);
+	monitoring (philo);
 	end(philo, forks, philosopher);
 }

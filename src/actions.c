@@ -6,16 +6,18 @@ static void	grab_forks(t_philo *philo)
 	{
 		pthread_mutex_lock(philo->right_fork);
 		pthread_mutex_lock(philo->left_fork);
-		print_actions(philo, FORKS);
-		print_actions(philo, FORKS);
+		if (philo->died == 1)
+			return ;
 	}
 	else
 	{
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
-		print_actions(philo, FORKS);
-		print_actions(philo, FORKS);
+		if (philo->died == 1)
+			return ;
 	}
+	print_actions(philo, FORKS);
+	print_actions(philo, FORKS);
 }
 
 void	to_eat(t_philo *philo)

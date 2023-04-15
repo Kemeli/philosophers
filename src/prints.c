@@ -15,6 +15,8 @@ void	print_actions(t_philo *philo, char *action) //colocar as actions em um enum
 {
 	long int timer;
 
+	if (philo->died == 1)
+		return ;
 	pthread_mutex_lock(philo->data->lock);
 	timer = handle_time(philo);
 	print_messsage (philo->id, timer, action);

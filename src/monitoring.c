@@ -19,7 +19,9 @@ void	monitoring (t_philo *philo)
 		{
 			timer = handle_time(philo);
 			printf ("%ld philo %d died\n", timer, philo[i].id);
-			philo[i].died = 1;
+			int j = -1;
+			while (++j < philo->data->num_philo)
+				philo[j].died = 1;
 			break ;
 		}
 		i++;
