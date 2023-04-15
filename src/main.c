@@ -25,6 +25,7 @@ int	convert_to_integer (char **argv, t_data **args)
 	}
 	else
 		(*args)->meals_num = 0;
+	// printf ("meals: %d\n", (*args)->meals_num);
 	return (1);
 }
 
@@ -48,3 +49,4 @@ int	main(int argc, char **argv)
 		printf ("invalid arguments\n");
 	free (args);
 }
+//lembrar que em raros casos o 2 ta entrando primeiro

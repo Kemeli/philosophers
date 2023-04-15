@@ -11,7 +11,7 @@ void	print_messsage (int id, int long timer, char *msg)
 	// ft_putchar_fd ('\n', 1); //lembrar de tirar
 }
 
-void	print_actions(t_philo *philo, char  *action) //colocar as actions em um enum
+void	print_actions(t_philo *philo, char *action) //colocar as actions em um enum
 {
 	long int timer;
 

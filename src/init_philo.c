@@ -10,16 +10,10 @@ void	init_philo(t_data *args, t_philo *philo,
 	{
 		philo[i].data = data;
 		philo[i].id = i + 1;
-		// philo[i].meals_num = args->meals_num;
 		philo[i].right_fork = &(*forks)[i];
 		philo[i].left_fork = &(*forks)[(i + 1) % args->num_philo];
-		philo[i].meals_num = args->meals_num; //deixar só 1
-		if (philo[i].id % 2 == 0)
-			philo[i].key = 1;
-		else
-			philo[i].key = 0;
-		if (philo[i].id == args->num_philo && philo[i].id % 2 != 0) //se for o ultimo e impar
-			philo[i].key = 1;
+		philo[i].meals_num = args->meals_num;
+		philo[i].last_meal = data->first_time; //pq pegou o start time no init_data
 		i++;
 	}
 }
@@ -34,22 +28,19 @@ void	init_forks(t_data *args, pthread_mutex_t **forks)
 		pthread_mutex_init(&(*forks)[i], NULL);
 }
 
-void	init_mutex(t_data *args, pthread_mutex_t **gate, pthread_mutex_t **lock)
+pthread_mutex_t	*init_mutex(t_data *args)
 {
+	pthread_mutex_t	*mutex;
 	int	i;
 
-	*gate = calloc (args->num_philo, sizeof (pthread_mutex_t));
-	*lock = calloc (args->num_philo, sizeof (pthread_mutex_t));
+	mutex = calloc (args->num_philo, sizeof (pthread_mutex_t));
 	i = -1;
 	while (++i < args->num_philo)
-	{
-		pthread_mutex_init (&(*gate)[i], NULL);
-		pthread_mutex_init (&(*lock)[i], NULL);
-	}
+		pthread_mutex_init (&mutex[i], NULL);
+	return (mutex);
 }
 
-void	init_data(t_data *data, t_data *args,
-		pthread_mutex_t **gate, pthread_mutex_t **lock)
+void	init_data(t_data *data, t_data *args)
 {
 	long int start;
 
@@ -58,8 +49,9 @@ void	init_data(t_data *data, t_data *args,
 	data->time2die = args->time2die;
 	data->time2eat = args->time2eat;
 	data->time2sleep = args->time2sleep;
-	data->gate = (*gate);
-	data->lock = (*lock);
+	data->gate = init_mutex(args);
+	data->lock = init_mutex(args);
+	data->monitor = init_mutex(args);
 	data->first_time = start;
 	data->start_timer = get_time(); //deixar só 1
 }

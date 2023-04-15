@@ -18,13 +18,15 @@ typedef struct s_data
 	int				time2die;
 	int				time2sleep;
 	int				num_philo;
+	int				smone_died;
 	long int		first_time;
 	pthread_mutex_t	*gate;
 	pthread_mutex_t	*lock;
+	pthread_mutex_t	*monitor;
 	long int		timer;
-	int				is_dead;
 	long int		start_timer;
 	int				meals_num;
+	// int				who_died;
 	// struct timeval waiting_time;
 } t_data;
 
@@ -32,44 +34,22 @@ typedef struct s_philo
 {
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
-	int				key;
+	// int				key;
 	int				id;
 	int				meals_num;
+	int				died;
 	long int		last_meal;
 	t_data			*data;
 }	t_philo;
 
 
-// typedef struct s_philo
-// {
-// 	unsigned int time2eat;
-// 	int	time2die;
-// 	int	time2sleep;
-// 	int	num_philo;
-// 	int	meals_num;
-// 	int	id;
-// 	long int	first_time;
-// 	int count_time; //long?
-// 	pthread_mutex_t *right_fork;
-// 	pthread_mutex_t *left_fork;
-// 	pthread_mutex_t *gate;
-// 	pthread_mutex_t *lock;
-// 	struct timeval waiting_time;
-// 	long int timer;
-// 	int is_dead;
-// 	long int last_meal;
-// 	long int start_timer;
-// 	int key;
-// } t_philo;
-
 void	start_threads(t_data *args);
 void	monitoring (t_philo *philo);
 
-void    init_mutex(t_data *args, pthread_mutex_t **gate, pthread_mutex_t **lock);
+// void    init_mutex(t_data *args, pthread_mutex_t **gate, pthread_mutex_t **lock);
 void	init_forks(t_data *args, pthread_mutex_t **forks);
 
-void	init_data(t_data *data, t_data *args,
-		pthread_mutex_t **gate, pthread_mutex_t **lock);
+void	init_data(t_data *data, t_data *args);
 
 void	init_philo(t_data *args, t_philo *philo,
 		pthread_mutex_t **forks, t_data *data);

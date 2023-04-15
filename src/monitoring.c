@@ -2,29 +2,26 @@
 
 void	monitoring (t_philo *philo)
 {
-	int	is_dead;
-	int	last_meal;
+	long current;
+	long timer;
+	long time2live;
 	int i;
-	pthread_mutex_t lock;
-	pthread_mutex_init(&lock, NULL);
 
-	is_dead = 0;
-	while (!is_dead)
+	while (1)
 	{
 		i = 0;
-		while (i < philo->data->num_philo && !is_dead)
+		current = get_time();
+		pthread_mutex_lock(philo->data->monitor);
+		time2live = philo[i].last_meal + philo->data->time2die;
+		pthread_mutex_unlock(philo->data->monitor);
+		// printf ("time2live: %ld, current: %ld\n", time2live, current);
+		if (current >= time2live)
 		{
-			pthread_mutex_lock(&lock);
-			last_meal = philo[i].last_meal;
-			pthread_mutex_unlock(&lock);
-			if (get_time() >= last_meal + philo->data->time2die)
-			{
-				// printf ("\tphilosopher %d died\n\n", philo[i].id);
-				pthread_mutex_lock(&lock);
-				is_dead = 1;
-				pthread_mutex_unlock(&lock);
-			}
-			i++;
+			timer = handle_time(philo);
+			printf ("%ld philo %d died\n", timer, philo[i].id);
+			philo[i].died = 1;
+			break ;
 		}
+		i++;
 	}
 }
