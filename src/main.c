@@ -19,34 +19,37 @@ int	convert_to_integer (char **argv, t_data **args)
 	{
 		temp = atoi(argv[5]);
 		if (temp > 0)
-			(*args)->meals_num = temp + 1; //pra n precisar ir até zero
+			(*args)->meals_num = temp + 1;
 		else
 			return (0);
 	}
-	else
-		(*args)->meals_num = 0;
-	// printf ("meals: %d\n", (*args)->meals_num);
+	// else
+	// 	(*args)->meals_num = 0;
 	return (1);
 }
 
-// int	main()
+int	validate_args(t_data *args)
+{
+	if (!args->num_philo || !args->time2die
+		|| !args->time2eat || !args->time2sleep)
+		return (0);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data *args;
 
-	// int argc = 6;
-	// char *argv[7] = {"0", 11", "200", "100", "200", "3", NULL};
-
-	if (!check_args (argc))
+	if (check_args (argc))
 	{
-		printf("philosophers: invalid arguments\n");
-		return (0);
+		args = calloc (1, sizeof (t_data));
+		if (convert_to_integer (argv, &args) && validate_args(args))
+		{
+			start_threads(args);
+			return (0);
+		}
+		free (args);
 	}
-	args = calloc (1, sizeof (t_data));
-	if (convert_to_integer (argv, &args))
-		start_threads(args);
-	else
-		printf ("invalid arguments\n");
-	free (args);
+	printf ("philosophers: error: invalid arguments\n");
 }
 //lembrar que em raros casos o 2 ta entrando primeiro

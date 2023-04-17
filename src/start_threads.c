@@ -22,4 +22,5 @@ void	start_threads(t_data *args)
 	}
 	monitoring (philo);
 	end(philo, forks, philosopher);
+	free (args);
 }
