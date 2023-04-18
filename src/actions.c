@@ -2,20 +2,15 @@
 
 static void	grab_forks(t_philo *philo)
 {
-	if (philo->id != philo->data->num_philo)
+	pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock (philo->data->lock);
+	if (philo->died == 1)
 	{
-		pthread_mutex_lock(philo->right_fork);
-		pthread_mutex_lock(philo->left_fork);
-		if (philo->died == 1)
-			return ;
+		pthread_mutex_unlock (philo->data->lock);
+		return ;
 	}
-	else
-	{
-		pthread_mutex_lock(philo->left_fork);
-		pthread_mutex_lock(philo->right_fork);
-		if (philo->died == 1)
-			return ;
-	}
+	pthread_mutex_unlock (philo->data->lock);
 	print_actions(philo, FORKS);
 	print_actions(philo, FORKS);
 }
@@ -24,19 +19,18 @@ void	to_eat(t_philo *philo)
 {
 	grab_forks (philo);
 	print_actions(philo, EAT);
-	pthread_mutex_lock (philo->data->gate);
+	pthread_mutex_lock (philo->data->monitor);
 	philo->last_meal = get_time();
-	pthread_mutex_unlock (philo->data->gate);
+	pthread_mutex_unlock (philo->data->monitor);
 	ft_usleep (philo->data->time2eat);
-
 
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 
-	pthread_mutex_lock (philo->data->lock);
+	pthread_mutex_lock (philo->data->gate);
 	if (philo->meals_num)
 		philo->meals_num--;
-	pthread_mutex_unlock (philo->data->lock);
+	pthread_mutex_unlock (philo->data->gate);
 }
 
 void	to_sleep(t_philo *philo)

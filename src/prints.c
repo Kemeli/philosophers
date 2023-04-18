@@ -9,7 +9,7 @@ void	print_actions(t_philo *philo, char *action)
 {
 	long int timer;
 
-	if (philo->died == 1)
+	if (check_death(philo))
 		return ;
 	pthread_mutex_lock(philo->data->print);
 	timer = handle_time(philo);

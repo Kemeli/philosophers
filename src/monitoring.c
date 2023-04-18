@@ -4,11 +4,14 @@ void	funeral(t_philo *philo, int i)
 {
 	long timer;
 
-	pthread_mutex_lock(philo->data->monitor);
+	pthread_mutex_lock(philo->data->print);
 	timer = handle_time(philo);
 	printf ("%ld philo %d died\n", timer, philo[i].id);
+	pthread_mutex_unlock(philo->data->print);
+
+	pthread_mutex_lock (philo->data->lock);
 	philo->died = 1;
-	pthread_mutex_unlock(philo->data->monitor);
+	pthread_mutex_unlock (philo->data->lock);
 }
 
 void	check_life(t_philo *philo)
@@ -45,7 +48,11 @@ void	*monitoring (void *args)
 	}
 	i = -1;
 	while (++i < philo->data->num_philo)
+	{
+		pthread_mutex_lock (philo->data->lock);
 		philo[i].died = 1;
+		pthread_mutex_unlock (philo->data->lock);
+	}
 	// printf ("TESTE\n");
 	return NULL ;
 }

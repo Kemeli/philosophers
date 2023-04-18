@@ -29,6 +29,7 @@ typedef struct s_data
 	long int		timer;
 	long int		start_timer;
 	int				meals_num;
+	int				dead_philo;
 } t_data;
 
 typedef struct s_philo
@@ -59,6 +60,7 @@ void	init_philo(t_data *args, t_philo *philo,
 		pthread_mutex_t **forks, t_data *data);
 
 void	*routine(void *arg);
+int		check_death(t_philo *philo);
 void	to_think(t_philo *philo);
 void	to_sleep(t_philo *philo);
 void	to_eat(t_philo *philo);
