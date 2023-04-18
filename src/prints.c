@@ -11,8 +11,8 @@ void	print_actions(t_philo *philo, char *action)
 
 	if (philo->died == 1)
 		return ;
-	pthread_mutex_lock(philo->data->lock);
+	pthread_mutex_lock(philo->data->print);
 	timer = handle_time(philo);
 	print_messsage (philo->id, timer, action);
-	pthread_mutex_unlock(philo->data->lock);
+	pthread_mutex_unlock(philo->data->print);
 }

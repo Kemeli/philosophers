@@ -25,6 +25,7 @@ typedef struct s_data
 	pthread_mutex_t	*lock;
 	pthread_mutex_t	*monitor;
 	pthread_mutex_t	*satisfied;
+	pthread_mutex_t	*print;
 	long int		timer;
 	long int		start_timer;
 	int				meals_num;

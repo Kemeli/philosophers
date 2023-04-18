@@ -47,5 +47,6 @@ void	init_data(t_data *data, t_data *args)
 	data->lock = init_mutex();
 	data->monitor = init_mutex();
 	data->satisfied = init_mutex();
+	data->print = init_mutex();
 	data->start_timer = get_time();
 }

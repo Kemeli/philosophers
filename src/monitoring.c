@@ -22,7 +22,7 @@ void	check_life(t_philo *philo)
 		pthread_mutex_lock(philo->data->monitor);
 		last_meal = philo[i].last_meal;
 		pthread_mutex_unlock(philo->data->monitor);
-		if (get_time() >= last_meal + philo->data->time2die)
+		if (get_time() >= last_meal + philo->data->time2die + 1)
 		{
 			funeral(philo, i);
 			return ;

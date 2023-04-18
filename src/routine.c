@@ -3,13 +3,14 @@
 void	*routine(void *args)
 {
 	t_philo *philo;
-	int count;
+	// int count;
 
-	count = -1;
+	// count = 1;
 	philo = (t_philo *)args;
 	if (philo->data->num_philo == 1)
 		return (NULL);
-	while (philo->died != 1 || ++count < philo->meals_num || philo->meals_num == 0)
+	// while (philo->died != 1 || ++count > philo->meals_num || philo->meals_num == 0)
+	while (philo->died != 1)
 	{
 		if (philo->died == 1)
 			return (NULL);
@@ -21,6 +22,8 @@ void	*routine(void *args)
 		if (philo->died == 1)
 			return (NULL);
 		to_think (philo);
+		if (philo->meals_num == 1)
+			break ;
 	}
 	pthread_mutex_lock (philo->data->satisfied);
 	philo->satisfied = 1;

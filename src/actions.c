@@ -24,11 +24,11 @@ void	to_eat(t_philo *philo)
 {
 	grab_forks (philo);
 	print_actions(philo, EAT);
-	ft_usleep (philo->data->time2eat);
-
 	pthread_mutex_lock (philo->data->gate);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock (philo->data->gate);
+	ft_usleep (philo->data->time2eat);
+
 
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);

@@ -31,6 +31,8 @@ void	destroy_mutexes(t_philo *philo)
 	free(philo->data->monitor);
 	pthread_mutex_destroy(philo->data->satisfied);
 	free(philo->data->satisfied);
+	pthread_mutex_destroy(philo->data->print);
+	free(philo->data->print);
 }
 
 void	end(t_philo *philo, pthread_mutex_t *forks, pthread_t *philosopher)
