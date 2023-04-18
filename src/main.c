@@ -7,24 +7,31 @@ int	check_args(int argc)
 	return (1);
 }
 
-int	convert_to_integer (char **argv, t_data **args)
+int	convert_to_integer (char **argv, t_data *args)
 {
 	int temp;
+	int	i;
 
-	(*args)->num_philo = atoi(argv[1]);
-	(*args)->time2die = atoi(argv[2]);
-	(*args)->time2eat = (atoi(argv[3]) * 1000);
-	(*args)->time2sleep = (atoi(argv[4]) * 1000);
+	i = -1;
+	while (argv[++i])
+	{
+		if (argv[i][0] == '-')
+			return (0);
+	}
+	args->num_philo = atoi(argv[1]);
+	args->time2die = atoi(argv[2]);
+	args->time2eat = (atoi(argv[3]) * 1000);
+	args->time2sleep = (atoi(argv[4]) * 1000);
 	if (argv[5])
 	{
 		temp = atoi(argv[5]);
 		if (temp > 0)
-			(*args)->meals_num = temp + 1;
+			args->meals_num = temp + 1;
 		else
 			return (0);
 	}
-	// else
-	// 	(*args)->meals_num = 0;
+	else
+		args->meals_num = 0;
 	return (1);
 }
 
@@ -42,8 +49,8 @@ int	main(int argc, char **argv)
 
 	if (check_args (argc))
 	{
-		args = calloc (1, sizeof (t_data));
-		if (convert_to_integer (argv, &args) && validate_args(args))
+		args = ft_calloc (1, sizeof (t_data));
+		if (convert_to_integer (argv, args) && validate_args(args))
 		{
 			start_threads(args);
 			return (0);
@@ -51,5 +58,5 @@ int	main(int argc, char **argv)
 		free (args);
 	}
 	printf ("philosophers: error: invalid arguments\n");
+	return (0);
 }
-//lembrar que em raros casos o 2 ta entrando primeiro

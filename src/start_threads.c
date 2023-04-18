@@ -2,14 +2,15 @@
 
 void	start_threads(t_data *args)
 {
-	pthread_t philosopher[args->num_philo];
-	pthread_mutex_t *forks;
-	t_philo *philo;
-	t_data *data;
-	int	i;
+	pthread_t		*philosopher;
+	pthread_mutex_t	*forks;
+	t_philo			*philo;
+	t_data			*data;
+	int				i;
 
-	philo = calloc (args->num_philo, sizeof (t_data));
-	data = calloc (1, sizeof (t_data));
+	philosopher = ft_calloc (args->num_philo + 1, sizeof (pthread_t));
+	philo = ft_calloc (args->num_philo, sizeof (t_data));
+	data = ft_calloc (1, sizeof (t_data));
 	init_forks(args, &forks);
 	init_data(data, args);
 	init_philo(args, philo, &forks, data);
@@ -20,7 +21,9 @@ void	start_threads(t_data *args)
 		pthread_create (&philosopher[i], NULL, routine, &philo[i]);
 		usleep(1);
 	}
-	monitoring (philo);
+	pthread_create (&philosopher[i], NULL, monitoring, philo);
+	// monitoring (philo);
 	end(philo, forks, philosopher);
 	free (args);
+	free (data);
 }

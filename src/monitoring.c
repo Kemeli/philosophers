@@ -1,29 +1,51 @@
 #include "philo.h"
 
-void	monitoring (t_philo *philo)
+void	funeral(t_philo *philo, int i)
 {
-	long current;
 	long timer;
-	long time2live;
-	int i;
 
-	while (1)
+	pthread_mutex_lock(philo->data->monitor);
+	timer = handle_time(philo);
+	printf ("%ld philo %d died\n", timer, philo[i].id);
+	philo->died = 1;
+	pthread_mutex_unlock(philo->data->monitor);
+}
+
+void	check_life(t_philo *philo)
+{
+	int	i;
+	long last_meal;
+
+	i = 0;
+	while (i < philo->data->num_philo)
 	{
-		i = 0;
-		current = get_time();
 		pthread_mutex_lock(philo->data->monitor);
-		time2live = philo[i].last_meal + philo->data->time2die;
+		last_meal = philo[i].last_meal;
 		pthread_mutex_unlock(philo->data->monitor);
-		// printf ("time2live: %ld, current: %ld\n", time2live, current);
-		if (current >= time2live)
+		if (get_time() >= last_meal + philo->data->time2die)
 		{
-			timer = handle_time(philo);
-			printf ("%ld philo %d died\n", timer, philo[i].id);
-			int j = -1;
-			while (++j < philo->data->num_philo)
-				philo[j].died = 1;
-			break ;
+			funeral(philo, i);
+			return ;
 		}
 		i++;
 	}
+}
+
+void	*monitoring (void *args)
+{
+	int i;
+	t_philo *philo;
+
+	philo = (t_philo *)args;
+	while (!philo->died)
+	{
+		check_life(philo);
+		if (philo->satisfied == 1)
+			return NULL ;
+	}
+	i = -1;
+	while (++i < philo->data->num_philo)
+		philo[i].died = 1;
+	// printf ("TESTE\n");
+	return NULL ;
 }

@@ -22,15 +22,9 @@ static void	grab_forks(t_philo *philo)
 
 void	to_eat(t_philo *philo)
 {
-	pthread_mutex_lock (philo->data->gate);
-	if (philo->meals_num)
-		philo->meals_num--;
-	pthread_mutex_unlock (philo->data->gate);
 	grab_forks (philo);
-
 	print_actions(philo, EAT);
-
-	usleep (philo->data->time2eat);
+	ft_usleep (philo->data->time2eat);
 
 	pthread_mutex_lock (philo->data->gate);
 	philo->last_meal = get_time();
@@ -38,12 +32,17 @@ void	to_eat(t_philo *philo)
 
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+
+	pthread_mutex_lock (philo->data->lock);
+	if (philo->meals_num)
+		philo->meals_num--;
+	pthread_mutex_unlock (philo->data->lock);
 }
 
 void	to_sleep(t_philo *philo)
 {
 	print_actions(philo, SLEEP);
-	usleep (philo->data->time2sleep);
+	ft_usleep(philo->data->time2sleep);
 }
 
 void	to_think(t_philo *philo)
