@@ -1,25 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kdaiane- < kdaiane-@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/19 01:51:06 by kdaiane-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:51:06 by kdaiane-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
-
-long	handle_time(t_philo *philo)
-{
-	long count_time;
-	long result;
-
-	count_time = get_time();
-	result = count_time - philo->data->start_timer;
-	return (result);
-}
-
-long int	get_time(void)
-{
-	struct timeval	time;
-	long int result;
-
-	gettimeofday(&time, NULL);
-	result = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-
-	return (result);
-}
 
 int	ft_atoi(const char *nptr)
 {
@@ -58,12 +49,6 @@ void	ft_usleep(int sleep)
 	}
 }
 
-void	ft_bzero(void *s, size_t n)
-{
-	memset(s, 0, n);
-	return ;
-}
-
 void	*ft_calloc(size_t cnt, size_t n)
 {
 	void	*ptr;
@@ -77,6 +62,13 @@ void	*ft_calloc(size_t cnt, size_t n)
 	ptr = ((void *) malloc (cnt * n));
 	if (!ptr)
 		return (NULL);
-	ft_bzero(ptr, n * cnt);
+	memset(ptr, 0, n * cnt);
 	return (ptr);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
 }

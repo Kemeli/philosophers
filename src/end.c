@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   end.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kdaiane- < kdaiane-@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/19 01:50:23 by kdaiane-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:50:23 by kdaiane-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	join_threads(t_philo *philo, pthread_t *philosopher)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < philo->data->num_philo + 1)
@@ -11,14 +23,11 @@ void	join_threads(t_philo *philo, pthread_t *philosopher)
 
 void	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < philo->data->num_philo)
-	{
 		pthread_mutex_destroy(&forks[i]);
-		// free (&forks[i]);
-	}
 }
 
 void	destroy_mutexes(t_philo *philo)
@@ -43,5 +52,4 @@ void	end(t_philo *philo, pthread_mutex_t *forks, pthread_t *philosopher)
 	free (philosopher);
 	free (forks);
 	free (philo);
-	// printf("TESTE\n");
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_threads.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kdaiane- < kdaiane-@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/19 01:50:58 by kdaiane-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:50:58 by kdaiane-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	start_threads(t_data *args)
@@ -14,7 +26,6 @@ void	start_threads(t_data *args)
 	init_forks(args, &forks);
 	init_data(data, args);
 	init_philo(args, philo, &forks, data);
-
 	i = -1;
 	while (++i < args->num_philo)
 	{
@@ -22,7 +33,6 @@ void	start_threads(t_data *args)
 		usleep(1);
 	}
 	pthread_create (&philosopher[i], NULL, monitoring, philo);
-	// monitoring (philo);
 	end(philo, forks, philosopher);
 	free (args);
 	free (data);

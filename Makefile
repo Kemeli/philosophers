@@ -6,7 +6,8 @@ SRC =		main.c \
 			start_threads.c \
 			utils.c \
 			actions.c \
-			prints.c
+			prints.c \
+			timing.c
 			
 NAME =		philo
 FLAGS =		-Wall -Wextra -Werror

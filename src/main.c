@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kdaiane- < kdaiane-@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/19 01:50:33 by kdaiane-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:50:33 by kdaiane-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	check_args(int argc)
@@ -7,9 +19,9 @@ int	check_args(int argc)
 	return (1);
 }
 
-int	convert_to_integer (char **argv, t_data *args)
+int	convert_to_integer(char **argv, t_data *args)
 {
-	int temp;
+	int	temp;
 	int	i;
 
 	i = -1;
@@ -35,8 +47,23 @@ int	convert_to_integer (char **argv, t_data *args)
 	return (1);
 }
 
-int	validate_args(t_data *args)
+int	validate_args(t_data *args, char **argv)
 {
+	int	i;
+	int	j;
+
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i] && argv[i][j])
+		{
+			if (!ft_isdigit(argv[i][j]))
+				return (0);
+			j++;
+		}
+		i++;
+	}
 	if (!args->num_philo || !args->time2die
 		|| !args->time2eat || !args->time2sleep)
 		return (0);
@@ -45,12 +72,12 @@ int	validate_args(t_data *args)
 
 int	main(int argc, char **argv)
 {
-	t_data *args;
+	t_data	*args;
 
 	if (check_args (argc))
 	{
 		args = ft_calloc (1, sizeof (t_data));
-		if (convert_to_integer (argv, args) && validate_args(args))
+		if (convert_to_integer (argv, args) && validate_args(args, argv))
 		{
 			start_threads(args);
 			return (0);

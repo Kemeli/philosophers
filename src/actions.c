@@ -1,45 +1,68 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   actions.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kdaiane- < kdaiane-@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/19 01:50:18 by kdaiane-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:50:18 by kdaiane-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-static void	grab_forks(t_philo *philo)
+static int	grab_forks(t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork);
 	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock (philo->data->lock);
-	if (philo->died == 1)
-	{
-		pthread_mutex_unlock (philo->data->lock);
-		return ;
-	}
-	pthread_mutex_unlock (philo->data->lock);
-	print_actions(philo, FORKS);
-	print_actions(philo, FORKS);
+	if (check_death(philo))
+		return (0);
+	if (!print_actions(philo, FORKS, 1))
+		return (0);
+	return (1);
 }
 
-void	to_eat(t_philo *philo)
+int	to_eat(t_philo *philo)
 {
-	grab_forks (philo);
-	print_actions(philo, EAT);
+	if (!grab_forks (philo))
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+		return (0);
+	}
+	if (!print_actions(philo, EAT, 0))
+		return (0);
+	ft_usleep (philo->data->time2eat);
 	pthread_mutex_lock (philo->data->monitor);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock (philo->data->monitor);
-	ft_usleep (philo->data->time2eat);
-
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
-
+	if (check_death(philo))
+		return (0);
 	pthread_mutex_lock (philo->data->gate);
 	if (philo->meals_num)
 		philo->meals_num--;
 	pthread_mutex_unlock (philo->data->gate);
+	if (check_death(philo))
+		return (0);
+	return (1);
 }
 
-void	to_sleep(t_philo *philo)
+int	to_sleep(t_philo *philo)
 {
-	print_actions(philo, SLEEP);
+	if (!print_actions(philo, SLEEP, 0))
+		return (0);
 	ft_usleep(philo->data->time2sleep);
+	if (check_death(philo))
+		return (0);
+	return (1);
 }
 
-void	to_think(t_philo *philo)
+int	to_think(t_philo *philo)
 {
-	print_actions(philo, THINK);
+	if (!print_actions(philo, THINK, 0))
+		return (0);
+	return (1);
 }

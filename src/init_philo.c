@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_philo.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kdaiane- < kdaiane-@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/19 01:50:29 by kdaiane-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:50:29 by kdaiane-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	init_philo(t_data *args, t_philo *philo,
@@ -36,7 +48,7 @@ void	init_forks(t_data *args, pthread_mutex_t **forks)
 		pthread_mutex_init(&(*forks)[i], NULL);
 }
 
-pthread_mutex_t	*init_mutex()
+pthread_mutex_t	*init_mutex(void)
 {
 	pthread_mutex_t	*mutex;
 

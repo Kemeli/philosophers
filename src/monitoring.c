@@ -1,14 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitoring.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kdaiane- < kdaiane-@student.42sp.org.br    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/19 01:50:38 by kdaiane-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:50:38 by kdaiane-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	funeral(t_philo *philo, int i)
 {
-	long timer;
+	long	timer;
 
 	pthread_mutex_lock(philo->data->print);
 	timer = handle_time(philo);
 	printf ("%ld philo %d died\n", timer, philo[i].id);
 	pthread_mutex_unlock(philo->data->print);
-
 	pthread_mutex_lock (philo->data->lock);
 	philo->died = 1;
 	pthread_mutex_unlock (philo->data->lock);
@@ -16,8 +27,8 @@ void	funeral(t_philo *philo, int i)
 
 void	check_life(t_philo *philo)
 {
-	int	i;
-	long last_meal;
+	int		i;
+	long	last_meal;
 
 	i = 0;
 	while (i < philo->data->num_philo)
@@ -34,17 +45,17 @@ void	check_life(t_philo *philo)
 	}
 }
 
-void	*monitoring (void *args)
+void	*monitoring(void *args)
 {
-	int i;
-	t_philo *philo;
+	int		i;
+	t_philo	*philo;
 
 	philo = (t_philo *)args;
 	while (!philo->died)
 	{
 		check_life(philo);
 		if (philo->satisfied == 1)
-			return NULL ;
+			return (NULL);
 	}
 	i = -1;
 	while (++i < philo->data->num_philo)
@@ -53,6 +64,5 @@ void	*monitoring (void *args)
 		philo[i].died = 1;
 		pthread_mutex_unlock (philo->data->lock);
 	}
-	// printf ("TESTE\n");
-	return NULL ;
+	return (NULL);
 }
