@@ -48,7 +48,7 @@ void	init_forks(t_data *args, pthread_mutex_t **forks)
 		pthread_mutex_init(&(*forks)[i], NULL);
 }
 
-pthread_mutex_t	*init_mutex(void)
+static pthread_mutex_t	*init_mutex(void)
 {
 	pthread_mutex_t	*mutex;
 

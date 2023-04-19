@@ -12,14 +12,14 @@
 
 #include "philo.h"
 
-int	check_args(int argc)
+static int	check_args(int argc)
 {
 	if (argc < 5 || argc > 6)
 		return (0);
 	return (1);
 }
 
-int	convert_to_integer(char **argv, t_data *args)
+static int	convert_to_integer(char **argv, t_data *args)
 {
 	int	temp;
 	int	i;
@@ -47,7 +47,7 @@ int	convert_to_integer(char **argv, t_data *args)
 	return (1);
 }
 
-int	validate_args(t_data *args, char **argv)
+static int	validate_args(t_data *args, char **argv)
 {
 	int	i;
 	int	j;

@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	join_threads(t_philo *philo, pthread_t *threads)
+static void	join_threads(t_philo *philo, pthread_t *threads)
 {
 	int	i;
 
@@ -21,7 +21,7 @@ void	join_threads(t_philo *philo, pthread_t *threads)
 		pthread_join (threads[i], NULL);
 }
 
-void	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
+static void	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ void	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
 		pthread_mutex_destroy(&forks[i]);
 }
 
-void	destroy_mutexes(t_philo *philo)
+static void	destroy_mutexes(t_philo *philo)
 {
 	pthread_mutex_destroy(philo->data->gate);
 	free(philo->data->gate);

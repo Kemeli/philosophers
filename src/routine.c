@@ -24,7 +24,7 @@ int	check_death(t_philo *philo)
 	return (0);
 }
 
-int	count_meals(t_philo *philo)
+static int	count_meals(t_philo *philo)
 {
 	pthread_mutex_lock (philo->data->gate);
 	if (philo->meals_num == 1)

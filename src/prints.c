@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	print_messsage(int id, int long timer, char *msg)
+static void	print_messsage(int id, int long timer, char *msg)
 {
 	printf ("%ld philosopher %d %s\n", timer, id, msg);
 }

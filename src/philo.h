@@ -58,16 +58,16 @@ typedef struct s_philo
 
 int		ft_atoi(const char *nptr);
 void	ft_usleep(int sleep);
-long	handle_time(t_philo *philo);
-long	get_time(void);
 void	*ft_calloc(size_t cnt, size_t n);
 int		ft_isdigit(int c);
+
+long	handle_time(t_philo *philo);
+long	get_time(void);
 
 void	start_threads(t_data *args);
 void	*monitoring(void *args);
 
 void	init_forks(t_data *args, pthread_mutex_t **forks);
-
 void	init_data(t_data *data, t_data *args);
 void	init_philo(t_data *args, t_philo *philo,
 			pthread_mutex_t **forks, t_data *data);
@@ -79,7 +79,6 @@ int		to_sleep(t_philo *philo);
 int		to_eat(t_philo *philo);
 
 int		print_actions(t_philo *philo, char *action, int is_fork);
-
 void	end(t_philo *philo, pthread_mutex_t *forks, pthread_t *philosopher);
 
 #endif

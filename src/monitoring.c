@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	funeral(t_philo *philo, int i)
+static void	funeral(t_philo *philo, int i)
 {
 	long	timer;
 
@@ -25,7 +25,7 @@ void	funeral(t_philo *philo, int i)
 	pthread_mutex_unlock (philo->data->lock);
 }
 
-void	check_life(t_philo *philo)
+static void	check_life(t_philo *philo)
 {
 	int		i;
 	long	last_meal;

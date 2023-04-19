@@ -23,7 +23,7 @@ static int	grab_forks(t_philo *philo)
 	return (1);
 }
 
-void	unlock_forks(t_philo *philo)
+static void	unlock_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
