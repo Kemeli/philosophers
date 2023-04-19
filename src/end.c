@@ -12,13 +12,13 @@
 
 #include "philo.h"
 
-void	join_threads(t_philo *philo, pthread_t *philosopher)
+void	join_threads(t_philo *philo, pthread_t *threads)
 {
 	int	i;
 
 	i = -1;
 	while (++i < philo->data->num_philo + 1)
-		pthread_join (philosopher[i], NULL);
+		pthread_join (threads[i], NULL);
 }
 
 void	destroy_forks(t_philo *philo, pthread_mutex_t *forks)
@@ -44,12 +44,12 @@ void	destroy_mutexes(t_philo *philo)
 	free(philo->data->print);
 }
 
-void	end(t_philo *philo, pthread_mutex_t *forks, pthread_t *philosopher)
+void	end(t_philo *philo, pthread_mutex_t *forks, pthread_t *threads)
 {
-	join_threads(philo, philosopher);
+	join_threads(philo, threads);
 	destroy_forks(philo, forks);
 	destroy_mutexes(philo);
-	free (philosopher);
+	free (threads);
 	free (forks);
 	free (philo);
 }

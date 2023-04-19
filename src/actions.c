@@ -23,22 +23,29 @@ static int	grab_forks(t_philo *philo)
 	return (1);
 }
 
+void	unlock_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
 int	to_eat(t_philo *philo)
 {
 	if (!grab_forks (philo))
 	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
+		unlock_forks(philo);
 		return (0);
 	}
 	if (!print_actions(philo, EAT, 0))
+	{
+		unlock_forks(philo);
 		return (0);
+	}
 	ft_usleep (philo->data->time2eat);
 	pthread_mutex_lock (philo->data->monitor);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock (philo->data->monitor);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	unlock_forks(philo);
 	if (check_death(philo))
 		return (0);
 	pthread_mutex_lock (philo->data->gate);

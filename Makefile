@@ -1,5 +1,5 @@
 SRC =		main.c \
-			init_philo.c \
+			init_data.c \
 			routine.c \
 			end.c \
 			monitoring.c \
