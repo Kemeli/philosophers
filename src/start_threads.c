@@ -21,7 +21,7 @@ void	start_threads(t_data *args)
 	int				i;
 
 	threads = ft_calloc (args->num_philo + 1, sizeof (pthread_t));
-	philo = ft_calloc (args->num_philo, sizeof (t_data));
+	philo = ft_calloc (args->num_philo, sizeof (t_philo));
 	data = ft_calloc (1, sizeof (t_data));
 	init_forks(args, &forks);
 	init_data(data, args);
@@ -34,6 +34,6 @@ void	start_threads(t_data *args)
 	}
 	pthread_create (&threads[i], NULL, monitoring, philo);
 	end(philo, forks, threads);
-	free (args);
 	free (data);
+	free (args);
 }

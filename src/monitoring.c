@@ -12,14 +12,9 @@
 
 #include "philo.h"
 
-static void	funeral(t_philo *philo, int i)
+static void	funeral(t_philo *philo)
 {
-	long	timer;
-
-	pthread_mutex_lock(philo->data->print);
-	timer = handle_time(philo);
-	printf ("%ld philo %d died\n", timer, philo[i].id);
-	pthread_mutex_unlock(philo->data->print);
+	print_actions(philo, "died", 0);
 	pthread_mutex_lock (philo->data->lock);
 	philo->died = 1;
 	pthread_mutex_unlock (philo->data->lock);
@@ -36,9 +31,9 @@ static void	check_life(t_philo *philo)
 		pthread_mutex_lock(philo->data->monitor);
 		last_meal = philo[i].last_meal;
 		pthread_mutex_unlock(philo->data->monitor);
-		if (get_time() >= last_meal + philo->data->time2die + 1)
+		if (get_time() >= last_meal + philo->data->time2die)
 		{
-			funeral(philo, i);
+			funeral(philo);
 			return ;
 		}
 		i++;
@@ -47,15 +42,16 @@ static void	check_life(t_philo *philo)
 
 void	*monitoring(void *args)
 {
-	int		i;
 	t_philo	*philo;
+	int		i;
 
 	philo = (t_philo *)args;
-	while (!philo->died)
+	while (1)
 	{
 		check_life(philo);
-		if (philo->satisfied == 1)
-			return (NULL);
+		if (philo->satisfied == 1 || philo->died == 1)
+			break;
+		usleep(1000);
 	}
 	i = -1;
 	while (++i < philo->data->num_philo)
