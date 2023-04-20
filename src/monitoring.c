@@ -33,7 +33,7 @@ static void	check_life(t_philo *philo)
 		pthread_mutex_unlock(philo->data->monitor);
 		if (get_time() >= last_meal + philo->data->time2die)
 		{
-			funeral(philo);
+			funeral(&philo[i]);
 			return ;
 		}
 		i++;
