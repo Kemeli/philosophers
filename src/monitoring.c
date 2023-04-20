@@ -50,7 +50,7 @@ void	*monitoring(void *args)
 	{
 		check_life(philo);
 		if (philo->satisfied == 1 || philo->died == 1)
-			break;
+			break ;
 		usleep(1000);
 	}
 	i = -1;
