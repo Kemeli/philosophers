@@ -61,7 +61,6 @@ void	ft_usleep(int sleep);
 void	*ft_calloc(size_t cnt, size_t n);
 int		ft_isdigit(int c);
 
-long	handle_time(t_philo *philo);
 long	get_time(void);
 
 void	start_threads(t_data *args);

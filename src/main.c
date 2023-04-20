@@ -32,8 +32,8 @@ static int	convert_to_integer(char **argv, t_data *args)
 	}
 	args->num_philo = atoi(argv[1]);
 	args->time2die = atoi(argv[2]);
-	args->time2eat = (atoi(argv[3]) * 1000);
-	args->time2sleep = (atoi(argv[4]) * 1000);
+	args->time2eat = (atoi(argv[3]));
+	args->time2sleep = (atoi(argv[4]));
 	if (argv[5])
 	{
 		temp = atoi(argv[5]);

@@ -21,9 +21,12 @@ int	print_actions(t_philo *philo, char *action, int is_fork)
 {
 	long	timer;
 
-	if (check_death(philo))
-		return (0);
 	pthread_mutex_lock(philo->data->print);
+	if (check_death(philo))
+	{
+		pthread_mutex_unlock(philo->data->print);
+		return (0);
+	}
 	timer = get_time() - philo->data->start_timer;
 	print_messsage (philo->id, timer, action);
 	if (is_fork)

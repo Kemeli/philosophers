@@ -43,12 +43,10 @@ void	*routine(void *args)
 	philo = (t_philo *)args;
 	if (philo->data->num_philo == 1)
 		return (NULL);
-	while (philo->died != 1)
+	while (!check_death(philo))
 	{
-		if (!to_eat (philo))
-			return (NULL);
-		if (!to_sleep (philo))
-			return (NULL);
+		to_eat (philo);
+		to_sleep (philo);
 		to_think (philo);
 		if (!count_meals(philo))
 			break ;

@@ -41,10 +41,10 @@ int	to_eat(t_philo *philo)
 		unlock_forks(philo);
 		return (0);
 	}
-	ft_usleep (philo->data->time2eat);
 	pthread_mutex_lock (philo->data->monitor);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock (philo->data->monitor);
+	ft_usleep (philo->data->time2eat);
 	unlock_forks(philo);
 	if (check_death(philo))
 		return (0);

@@ -34,21 +34,6 @@ int	ft_atoi(const char *nptr)
 	return (number * signal);
 }
 
-void	ft_usleep(int sleep)
-{
-	long	start;
-	long	current;
-
-	start = get_time();
-	current = get_time();
-	sleep = sleep / 1000;
-	while (current - start < sleep)
-	{
-		current = get_time();
-		usleep(100);
-	}
-}
-
 void	*ft_calloc(size_t cnt, size_t n)
 {
 	void	*ptr;
