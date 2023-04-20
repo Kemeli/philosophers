@@ -45,11 +45,9 @@ void	*routine(void *args)
 		return (NULL);
 	while (philo->died != 1)
 	{
-		if (check_death(philo) || !to_eat (philo))
+		if (!to_eat (philo))
 			return (NULL);
 		if (!to_sleep (philo))
-			return (NULL);
-		if (check_death(philo))
 			return (NULL);
 		to_think (philo);
 		if (!count_meals(philo))
