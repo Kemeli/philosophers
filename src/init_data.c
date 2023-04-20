@@ -24,13 +24,13 @@ void	init_philo(t_data *args, t_philo *philo,
 		philo[i].id = i + 1;
 		if (i == args->num_philo - 1)
 		{
-			philo[i].left_fork = &(*forks)[i];
-			philo[i].right_fork = &(*forks)[(i + 1) % args->num_philo];
+			philo[i].first_fork = &(*forks)[(i + 1) % args->num_philo];
+			philo[i].second_fork = &(*forks)[i];
 		}
 		else
 		{
-			philo[i].right_fork = &(*forks)[i];
-			philo[i].left_fork = &(*forks)[(i + 1) % args->num_philo];
+			philo[i].first_fork = &(*forks)[i];
+			philo[i].second_fork = &(*forks)[(i + 1) % args->num_philo];
 		}
 		philo[i].meals_num = args->meals_num;
 		philo[i].last_meal = data->start_timer;

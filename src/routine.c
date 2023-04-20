@@ -15,7 +15,7 @@
 int	check_death(t_philo *philo)
 {
 	pthread_mutex_lock (philo->data->lock);
-	if (philo->died == 1)
+	if (philo->data->dead_philo == 1)
 	{
 		pthread_mutex_unlock (philo->data->lock);
 		return (1);

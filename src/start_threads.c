@@ -30,7 +30,7 @@ void	start_threads(t_data *args)
 	while (++i < args->num_philo)
 	{
 		pthread_create (&threads[i], NULL, routine, &philo[i]);
-		usleep(1);
+		usleep(100);
 	}
 	pthread_create (&threads[i], NULL, monitoring, philo);
 	end(philo, forks, threads);

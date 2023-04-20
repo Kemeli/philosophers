@@ -14,8 +14,8 @@
 
 static int	grab_forks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork);
-	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(philo->first_fork);
+	pthread_mutex_lock(philo->second_fork);
 	if (check_death(philo))
 		return (0);
 	if (!print_actions(philo, FORKS, 1))
@@ -25,8 +25,8 @@ static int	grab_forks(t_philo *philo)
 
 static void	unlock_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->second_fork);
+	pthread_mutex_unlock(philo->first_fork);
 }
 
 int	to_eat(t_philo *philo)
