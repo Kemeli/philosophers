@@ -15,6 +15,12 @@
 static int	grab_forks(t_philo *philo)
 {
 	pthread_mutex_lock(philo->first_fork);
+	if (philo->data->num_philo == 1)
+	{
+		print_actions(philo, FORKS, 0);
+		pthread_mutex_unlock(philo->first_fork);
+		return (0);
+	}
 	pthread_mutex_lock(philo->second_fork);
 	if (check_death(philo))
 		return (0);

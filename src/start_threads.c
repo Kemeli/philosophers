@@ -27,7 +27,7 @@ void	start_threads(t_data *args)
 	init_data(data, args);
 	init_philo(args, philo, &forks, data);
 	i = -1;
-	while (++i < args->num_philo && args->num_philo > 1)
+	while (++i < args->num_philo)
 		pthread_create (&threads[i], NULL, routine, &philo[i]);
 	pthread_create (&threads[i], NULL, monitoring, philo);
 	end(philo, forks, threads);

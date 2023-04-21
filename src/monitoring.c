@@ -23,7 +23,7 @@ static void	funeral(t_philo *philo)
 void	*monitoring(void *args)
 {
 	t_philo	*philo;
-	int	i;
+	int		i;
 	long	last_meal;
 
 	philo = (t_philo *)args;

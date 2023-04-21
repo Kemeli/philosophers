@@ -43,7 +43,8 @@ void	*routine(void *args)
 	philo = (t_philo *)args;
 	while (!check_death(philo))
 	{
-		to_eat (philo);
+		if (!to_eat (philo))
+			return (NULL);
 		to_sleep (philo);
 		to_think (philo);
 		if (!count_meals(philo))
