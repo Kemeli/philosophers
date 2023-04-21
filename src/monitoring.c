@@ -43,10 +43,11 @@ static void	funeral(t_philo *philo)
 void	*monitoring(void *args)
 {
 	t_philo	*philo;
-	int	i = 0;
+	int	i;
 	long	last_meal;
 
 	philo = (t_philo *)args;
+	i = 0;
 	while (1)
 	{
 		pthread_mutex_lock(philo->data->monitor);
