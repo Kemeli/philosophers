@@ -14,9 +14,6 @@
 
 static int	grab_forks(t_philo *philo)
 {
-	// if (philo->id % 2 == 0 
-	// 		|| (philo->id % 2 != 0 && philo->id == philo->data->num_philo))
-	// 	usleep (philo->data->time2eat);
 	pthread_mutex_lock(philo->first_fork);
 	pthread_mutex_lock(philo->second_fork);
 	if (check_death(philo))
@@ -39,14 +36,14 @@ int	to_eat(t_philo *philo)
 		unlock_forks(philo);
 		return (0);
 	}
-	pthread_mutex_lock (philo->data->monitor);
-	philo->last_meal = get_time();
-	pthread_mutex_unlock (philo->data->monitor);
 	if (!print_actions(philo, EAT, 0))
 	{
 		unlock_forks(philo);
 		return (0);
 	}
+	pthread_mutex_lock (philo->data->monitor);
+	philo->last_meal = get_time();
+	pthread_mutex_unlock (philo->data->monitor);
 	ft_usleep (philo->data->time2eat);
 	unlock_forks(philo);
 	if (check_death(philo))

@@ -14,7 +14,7 @@
 
 static void	print_messsage(int id, int long timer, char *msg)
 {
-	printf ("%ld philosopher %d %s\n", timer, id, msg);
+	printf ("%ld   %d %s\n", timer, id, msg);
 }
 
 int	print_actions(t_philo *philo, char *action, int is_fork)

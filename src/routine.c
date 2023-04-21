@@ -41,8 +41,6 @@ void	*routine(void *args)
 	t_philo	*philo;
 
 	philo = (t_philo *)args;
-	if (philo->data->num_philo == 1)
-		return (NULL);
 	while (!check_death(philo))
 	{
 		to_eat (philo);
