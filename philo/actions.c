@@ -12,6 +12,12 @@
 
 #include "philo.h"
 
+static void	unlock_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->second_fork);
+	pthread_mutex_unlock(philo->first_fork);
+}
+
 static int	grab_forks(t_philo *philo)
 {
 	pthread_mutex_lock(philo->first_fork);
@@ -23,25 +29,22 @@ static int	grab_forks(t_philo *philo)
 	}
 	pthread_mutex_lock(philo->second_fork);
 	if (check_death(philo))
+	{
+		unlock_forks(philo);
 		return (0);
+	}
 	if (!print_actions(philo, FORKS, 1))
+	{
+		unlock_forks(philo);
 		return (0);
+	}
 	return (1);
-}
-
-static void	unlock_forks(t_philo *philo)
-{
-	pthread_mutex_unlock(philo->second_fork);
-	pthread_mutex_unlock(philo->first_fork);
 }
 
 int	to_eat(t_philo *philo)
 {
 	if (!grab_forks (philo))
-	{
-		unlock_forks(philo);
 		return (0);
-	}
 	if (!print_actions(philo, EAT, 0))
 	{
 		unlock_forks(philo);

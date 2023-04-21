@@ -20,6 +20,25 @@ static void	funeral(t_philo *philo)
 	pthread_mutex_unlock (philo->data->lock);
 }
 
+int	checks(t_philo *philo)
+{
+	pthread_mutex_lock (philo->data->satisfied);
+	if (philo->satisfied)
+	{
+		pthread_mutex_unlock (philo->data->satisfied);
+		return (0);
+	}
+	pthread_mutex_unlock (philo->data->satisfied);
+	pthread_mutex_lock (philo->data->lock);
+	if (philo->data->dead_philo)
+	{
+		pthread_mutex_unlock (philo->data->lock);
+		return (0);
+	}
+	pthread_mutex_unlock (philo->data->lock);
+	return (1);
+}
+
 void	*monitoring(void *args)
 {
 	t_philo	*philo;
@@ -38,11 +57,11 @@ void	*monitoring(void *args)
 			funeral(&philo[i]);
 			break ;
 		}
+		if (!checks(philo))
+			break ;
 		i++;
 		if (i == philo->data->num_philo)
 			i = 0;
-		if (philo->satisfied == 1 || philo->data->dead_philo == 1)
-			break ;
 		usleep(3000);
 	}
 	return (NULL);
