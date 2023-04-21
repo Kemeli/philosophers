@@ -20,7 +20,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	cc $(FLAGS) $(OBJS) -pthread -o $@
 
-$(OBJ_DIR)/%.o: src/%.c
+$(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	cc -g -c $(FLAGS) $< -o $@
 
