@@ -14,9 +14,9 @@
 
 static int	grab_forks(t_philo *philo)
 {
-	if (philo->id % 2 == 0 
-			|| (philo->id % 2 != 0 && philo->id == philo->data->num_philo))
-		usleep (philo->data->time2eat);
+	// if (philo->id % 2 == 0 
+	// 		|| (philo->id % 2 != 0 && philo->id == philo->data->num_philo))
+	// 	usleep (philo->data->time2eat);
 	pthread_mutex_lock(philo->first_fork);
 	pthread_mutex_lock(philo->second_fork);
 	if (check_death(philo))
