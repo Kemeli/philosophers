@@ -12,9 +12,12 @@
 
 #include "philo.h"
 
-static void	print_messsage(int id, int long timer, char *msg)
+static int	print_messsage(int id, int long timer, char *msg)
 {
+	if (check_death(philo))
+		return (0);
 	printf ("%ld   %d %s\n", timer, id, msg);
+	return (1);
 }
 
 int	print_actions(t_philo *philo, char *action, int is_fork)
@@ -28,7 +31,8 @@ int	print_actions(t_philo *philo, char *action, int is_fork)
 		return (0);
 	}
 	timer = get_time() - philo->data->start_timer;
-	print_messsage (philo->id, timer, action);
+	if (!print_messsage (philo->id, timer, action))
+		return (0);
 	if (is_fork)
 		print_messsage (philo->id, timer, action);
 	pthread_mutex_unlock(philo->data->print);
